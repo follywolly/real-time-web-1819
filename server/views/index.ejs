@@ -1,0 +1,28 @@
+<%- include('./partials/head') %>
+<main>
+  <div class="container">
+    <h1>Chat</h1>
+    <div class="chat-holder">
+      <ul id="messages">
+        <!-- messages inserted from js/script.js -->
+      </ul>
+    </div>
+
+    <form id="chat-form">
+      <input type="text" name="chat" id="chat" value="" ><!--
+      --><label for="chat">Start chatting</label><!--
+      --><button type="submit" name="button">Submit</button>
+    </form>
+
+    <!-- <div id="bar-users" class="ct-chart ct-perfect-fourth"></div> -->
+    <form id="user-form">
+      <label for="user-input">Set name</label><!--
+      --><input type="text" name="user" id="user-input" value="" ><!--
+      --><button type="submit" name="button">Submit</button>
+    </form>
+  </div>
+</main>
+
+
+
+<%- include('./partials/footer') %>

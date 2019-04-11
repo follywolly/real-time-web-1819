@@ -1,4 +1,5 @@
 import store from '../store/index.js'
+import helper from '../helpers/general.js'
 import Player from './player.js'
 
 const signup = {
@@ -7,6 +8,8 @@ const signup = {
     if (userForm) {
       const name = document.querySelector('#user-input')
       const color = document.querySelector('#user-color')
+
+      color.value = helper.getRandomColor()
 
       userForm.addEventListener('submit', e => {
         e.preventDefault()

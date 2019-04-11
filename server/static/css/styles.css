@@ -149,7 +149,7 @@ form button {
   top: 0;
   left: 0;
   bottom: 0;
-  background-color: papayawhip;
+  background-color: #f8f8f8;
   /* z-index: -1; */
 }
 
@@ -178,5 +178,9 @@ form button {
 .player__messages {
   position: absolute;
   top: -5rem;
+  left: 0;
+}
+#client-user .player__messages {
+  left: auto;
   right: 0;
 }

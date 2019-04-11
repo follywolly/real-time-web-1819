@@ -6,6 +6,13 @@ import User from './user/user.js'
 const socket = io()
 socket.on('connect', () => {
   store.setState({userID: socket.io.engine.id})
+  socket.emit('getUsers', users => {
+    users.forEach(user => {
+      const users = store.getState('users')
+      users.push(new User(user, socket))
+      store.setState(users)
+    })
+  })
 })
 
 // gameHandler
@@ -14,7 +21,6 @@ message.init(socket)
 
 
 socket.on('userConnect', user => {
-  console.log('user connected', user);
   if (user.id === store.getState('userID')) {
     return
   }
@@ -26,9 +32,9 @@ socket.on('userDisconnect', id => {
   console.log('user disconnected', id);
   const temp = store.getState('users')
   const index = temp.findIndex(obj => obj.id === id)
-  if (index) {
+  if (index > -1) {
     const users = temp.splice(index, 1)
-    const el = document.querySelector(`[data-playerID="${id}"]`)
+    const el = document.querySelector(`[data-player="${id}"]`)
     if (el) {
       el.remove()
     }
@@ -43,7 +49,6 @@ socket.on('move', user => {
   const users = store.getState('users')
   const i = users.findIndex(obj => obj.id === user.id)
   if (i > -1) {
-    console.log(user.coords)
-    users[i].setMove(user.coords.x, user.coords.y)
+    users[i].setMove(user.dir)
   }
 })

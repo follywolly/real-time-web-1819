@@ -10,7 +10,6 @@ class Player extends User {
     window.addEventListener('keydown', e => {
       this.move(e)
     })
-    this.momentum = 20
 
   }
   move(e) {
@@ -20,21 +19,22 @@ class Player extends User {
     }
     // 37, 38, 39, 40
     if (!this.keyCodes.includes(e.keyCode)) return
-    let coords
+
+    let dir
     if (e.keyCode === 37) {
-      coords = {x: -this.momentum, y: 0}
+      dir = 'left'
     }
     if (e.keyCode === 38) {
-      coords = {x: 0, y: -this.momentum}
+      dir = 'up'
     }
     if (e.keyCode === 39) {
-      coords = {x: this.momentum, y: 0}
+      dir = 'right'
     }
     if (e.keyCode === 40) {
-      coords = {x: 0, y: this.momentum}
+      dir = 'down'
     }
-    this.setMove(coords.x, coords.y)
-    this.socket.emit('move', {id: this.id, coords})
+    this.setMove(dir)
+    this.socket.emit('move', {id: this.id, dir, position: this.position})
   }
 }
 

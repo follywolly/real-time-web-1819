@@ -17,20 +17,6 @@ app.get('/', (req, res) => {
   res.render('index.ejs')
 })
 
-// const data = {
-//   users: {
-//     time: 0,
-//     amount: 0
-//   }
-// }
-// setInterval(() => {
-//   data.users = {
-//     time: Date.now(),
-//     amount: data.users.amount
-//   }
-//   io.emit('users', data.users)
-// }, 3000)
-
 io.on('connection', socket => {
   // data.users.amount++
   // socket.on('disconnect', () => data.users.amount--)

@@ -4,6 +4,9 @@ const dom = {
     if (options.text) {
       el.innerText = options.text
     }
+    if (options.id) {
+      el.setAttribute('id', options.id)
+    }
     if (options.class) {
       if (typeof options.class === 'string') {
         el.classList.add(options.class)

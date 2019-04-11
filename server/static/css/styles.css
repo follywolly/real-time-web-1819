@@ -15,6 +15,29 @@ body {
   max-width: 20rem;
 }
 
+form input {
+  appearance: none;
+  border: 0;
+  background: 0;
+  background-color: #fff;
+  border: 1px solid #cecece;
+  border-radius: 5px;
+  padding: 0.75rem 1.25rem;
+  transition: all 0.3s;
+}
+form button {
+  appearance: none;
+  border: 0;
+  background: 0;
+  background-color: #cecece;
+  border: 1px solid #cecece;
+  border-radius: 5px;
+  padding: 0.75rem 1.25rem;
+}
+
+
+
+/* === CHAT FORM STYLES === */
 #chat-form {
   max-width: 40rem;
   position: fixed;
@@ -38,25 +61,6 @@ body {
   background-color: #cecece;
   border-radius: 5px 5px 0 0;
 }
-form input {
-  appearance: none;
-  border: 0;
-  background: 0;
-  background-color: #fff;
-  border: 1px solid #cecece;
-  border-radius: 5px;
-  padding: 0.75rem 1.25rem;
-  transition: all 0.3s;
-}
-form button {
-  appearance: none;
-  border: 0;
-  background: 0;
-  background-color: #cecece;
-  border: 1px solid #cecece;
-  border-radius: 5px;
-  padding: 0.75rem 1.25rem;
-}
 #chat-form input {
   flex: 1;
   border-radius: 0 0 0 5px;
@@ -67,15 +71,19 @@ form button {
 .chat-holder {
   margin-top: 1rem;
 }
+
+/* === MESSAGE CENTER STYLES === */
 #messages {
   padding: 2rem;
   background-color: #F9F9F9;
   list-style: none;
-  min-height: 80vh;
+  position: relative;
+  z-index: 2;
 }
 .message {
   margin: 1rem 0 0;
   display: table;
+  white-space: nowrap;
 }
 .message .begin {
   margin-top: 1rem;
@@ -111,6 +119,8 @@ form button {
 .message.client .begin {
   text-align: right;
 }
+
+/* === USER FORM STYLES === */
 #user-form {
   position: fixed;
   top: 0;
@@ -130,4 +140,43 @@ form button {
   z-index: -3;
   opacity: 0;
   pointer-events: none;
+}
+
+/* === MAP STYLES === */
+#map {
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: papayawhip;
+  /* z-index: -1; */
+}
+
+/* === PLAYER STYLES === */
+.player {
+  content: "";
+  width: 20px;
+  height: 20px;
+  display: block;
+  border-radius: 50%;
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  z-index: 10;
+  transition: all 0.3s linear;
+}
+.player__name {
+  font-size: .625rem;
+  position: absolute;
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  opacity: 0.5;
+}
+.player__messages {
+  position: absolute;
+  top: -5rem;
+  right: 0;
 }

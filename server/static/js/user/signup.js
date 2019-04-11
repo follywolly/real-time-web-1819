@@ -15,7 +15,9 @@ const signup = {
         e.preventDefault()
         userForm.classList.add('hide')
         document.querySelector('#chat').focus()
-
+        if (color.value === '#F9F9F9') {
+          color.value = '#000'
+        }
         const options = {
           name: name.value,
           id: store.getState('userID'),

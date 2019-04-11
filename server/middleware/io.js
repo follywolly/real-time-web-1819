@@ -1,4 +1,4 @@
-// const users = []
+const moves = []
 
 const getUsers = db => {
   const users = db.collection('users')
@@ -25,9 +25,15 @@ const handleExports = (socket, io, db) => {
 
   socket.on('getUsers', async cb => {
     const data = await getUsers(db)
-    cb(data)
+    cb(
+      data.map(user => {
+        const move = moves.find(move => move.id === user.id)
+        return move ? Object.assign({}, move, user) : user
+      })
+    )
   })
   socket.on('userConnect', user => {
+    moves.push({id: user.id})
     db.collection('users').doc(user.id).set(user)
     io.emit('userConnect', user)
   })
@@ -39,9 +45,11 @@ const handleExports = (socket, io, db) => {
     io.emit('message', msg)
   })
   socket.on('move', async user => {
-    const existing = await getUser(db, user.id)
-    const merge = Object.assign({}, existing, user)
-    db.collection('users').doc(user.id).set(merge)
+    const i = moves.findIndex(u => u.id === user.id)
+    if (i > -1) {
+      const merge = Object.assign({}, moves[i], user)
+      moves[i] = merge
+    }
     io.emit('move', user)
   })
 }

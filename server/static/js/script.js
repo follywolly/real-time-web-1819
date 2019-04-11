@@ -13,6 +13,9 @@ socket.on('connect', () => {
       store.setState(users)
     })
   })
+  socket.emit('getDBUsers', users => {
+    console.log(users);
+  })
 })
 
 // gameHandler

@@ -33,6 +33,7 @@ class Player extends User {
     if (e.keyCode === 40) {
       dir = 'down'
     }
+    if (!this.canMove) return
     this.setMove(dir)
     this.socket.emit('move', {id: this.id, dir, position: this.position})
   }

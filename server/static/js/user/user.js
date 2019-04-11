@@ -41,8 +41,6 @@ class User {
     return space / 100 * this.momentum
   }
   setMove(dir) {
-    if (!this.canMove) return
-
     const allowed = helper.checkOnScreen(this.map, this.player.getBoundingClientRect(), dir, {x: this.x, y: this.y})
 
     if (!allowed) return

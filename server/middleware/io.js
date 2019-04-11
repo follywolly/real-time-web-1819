@@ -23,6 +23,7 @@ const handleExports = (socket, io) => {
     if (i > -1) {
       users[i] = Object.assign({}, users[i], user)
     }
+    console.log(user);
     io.emit('move', user)
   })
 }

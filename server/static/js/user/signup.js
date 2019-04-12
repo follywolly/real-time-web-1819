@@ -18,6 +18,12 @@ const signup = {
         if (color.value === '#F9F9F9') {
           color.value = '#000'
         }
+        if (color.value.length > 7) {
+          color.value = color.value.substring(0,7)
+        }
+        if (name.value.length > 15) {
+          name.value = name.value.substring(0,15)
+        }
         const options = {
           name: name.value,
           id: store.getState('userID'),

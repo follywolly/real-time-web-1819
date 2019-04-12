@@ -33,6 +33,9 @@ const handleExports = (socket, io, db) => {
     )
   })
   socket.on('userConnect', user => {
+    if (user.name.length > 15) {
+      user.name = user.name.substring(0,15)
+    }
     moves.push({id: user.id})
     db.collection('users').doc(user.id).set(user)
     io.emit('userConnect', user)

@@ -8,11 +8,11 @@ const firebase = require('firebase-admin')
 
 const port = process.env.PORT || 3000
 
-const serviceAccount = require('./webdev-rtw.json')
+const serviceAccount = require('./webdev-weatherworld.json')
 
 firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount),
-  databaseURL: 'https://webdev-rtw.firebaseio.com'
+  databaseURL: 'https://webdev-weatherworld.firebaseio.com'
 })
 const db = firebase.firestore()
 

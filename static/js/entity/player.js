@@ -9,7 +9,6 @@ class Player extends Entity {
     document.querySelector('#map').appendChild(el)
     super({...props, el})
 
-
     this.setStyle({width: `${tile.size}px`, height: `${tile.size}px`, top: '0', left: '0'})
     store.subscribe('clickedTile', this.onMove.bind(this), 'player')
   }

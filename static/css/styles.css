@@ -7,7 +7,28 @@ body {
   position: relative;
   margin: 0;
   padding: 0;
-  background-color: brown;
+  background-color: lightgrey;
+  font-family: sans-serif;
+}
+.container {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+form {
+  display: flex;
+  flex-direction: column;
+}
+#login,#register {
+  max-width: 15rem;
+}
+input {
+  background: 0;
+  border: 0;
+  border-radius: 5px;
+  background: white;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0 1.5rem;
 }
 #map {
   width: 100%;
@@ -16,9 +37,10 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   display: grid;
-}
-.tile {
-  background-color: purple;
+  background-color: grey;
+  /* background: url('https://fanofrpgmakermv.files.wordpress.com/2016/02/plugin_12.jpg'); */
+  background-repeat: no-repeat;
+  background-position: top left;
 }
 #cursor {
   position: absolute;

@@ -7,6 +7,8 @@ class Entity {
   constructor(props) {
     this.styles = []
     this.el = props.el
+    this.queue = []
+    this.break = false
   }
   setStyle(obj) {
     const styles = Object.entries(obj)
@@ -38,18 +40,34 @@ class Entity {
       .search(grid.graph, start, end)
       .map(node => ({x: node.x, y: node.y}))
 
-    this.step(route)
+    this.addToQueue(route)
   }
-  step(route, i = 0) {
-    console.log(route, i);
-    if (i === route.length) {
+  addToQueue(value) {
+    const length = this.queue.length
+    if (length > 0) {
+      this.queue = []
+    }
+    if (Array.isArray(value)) {
+      this.queue = this.queue.concat(value)
+    } else {
+      this.queue.push(value)
+    }
+    this.break = true
+    setTimeout(()=>{
+      this.break = false
+      this.step(this.queue.length)
+    },200)
+  }
+  step(length) {
+    if (length === 0 || this.break) {
       return
     }
-    const node = route[i]
+    const node = this.queue[0]
+    this.queue.shift()
     setTimeout(() => {
       store.setState({currentCoords: [node.x, node.y]})
       this.setStyle({transform: `translate(${node.y * tile.size}px,${node.x * tile.size}px)`})
-      this.step(route, i + 1)
+      this.step(this.queue.length)
     }, 150)
   }
 }

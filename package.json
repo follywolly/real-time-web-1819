@@ -18,13 +18,17 @@
   },
   "homepage": "https://github.com/follywolly/real-time-web-1819#readme",
   "dependencies": {
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "express-session": "^1.16.1",
     "firebase-admin": "^7.2.0",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
     "dot-env": "0.0.1",
+    "dotenv": "^7.0.0",
     "nodemon": "^1.18.11"
   }
 }

@@ -1,11 +1,11 @@
 class Store {
   constructor() {
     this.state = {
-      userID: null,
-      client: null,
+      socketID: null,
+      user: null,
       users: [],
-      currentCoords: [0,0],
-      clickedTile: null
+      clickedTile: null,
+      currentMap: 'london'
     }
     this.subscriptions = []
   }
@@ -32,7 +32,6 @@ class Store {
     } else {
       this.subscriptions.push({id, prop, cb})
     }
-    console.log(this.subscriptions);
   }
 }
 

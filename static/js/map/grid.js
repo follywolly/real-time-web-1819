@@ -6,28 +6,25 @@ const grid = {
     this.map = el
     this.tile = tile
   },
-  generate(x, y) {
+  generate(x, y, graph) {
     const rows = []
-    const astarRows = []
     for (let i = 0; i < y; i++) {
       let tiles = []
-      let astarColumns = []
       for (let j = 0; j < x; j++) {
         const el = document.createElement('div')
         el.classList.add('tile')
         el.setAttribute('data-tile', `${i},${j}`)
         this.map.appendChild(el)
         tiles.push({tileID: j, el})
-        astarColumns.push(1)
       }
       rows.push({row: i, tiles})
-      astarRows.push(astarColumns)
     }
     tile.listeners(this.map)
-    this.graph = this.generateAstar(astarRows)
+    this.model = graph
+    this.graph = this.generateGraph(graph)
     return rows
   },
-  generateAstar(rows) {
+  generateGraph(rows) {
     const graph = new astar.Graph(rows)
     return graph
   }

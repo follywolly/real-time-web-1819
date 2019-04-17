@@ -13,14 +13,15 @@ const size = {
     return {width, height}
   },
   calc() {
-    const canvas = this.screen()
-    this.tileGrid = {x: Math.floor(canvas.width / tile.size), y: Math.floor(canvas.height / tile.size)}
-    if (this.tileGrid.x > 30) {
-      this.tileGrid.x = 30
-    }
-    if (this.tileGrid.y > 15) {
-      this.tileGrid.y = 15
-    }
+    // const canvas = this.screen()
+    // this.tileGrid = {x: Math.floor(canvas.width / tile.size), y: Math.floor(canvas.height / tile.size)}
+    // if (this.tileGrid.x > 30) {
+    //   this.tileGrid.x = 30
+    // }
+    // if (this.tileGrid.y > 20) {
+    //   this.tileGrid.y = 20
+    // }
+    this.tileGrid = {x: 30, y: 20}
     return {width: this.tileGrid.x * tile.size, height: this.tileGrid.y * tile.size, ...this.tileGrid, tile}
   }
 }

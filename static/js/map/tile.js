@@ -15,7 +15,7 @@ const tile = {
     const bounds = e.target.getBoundingClientRect()
     const mapBounds = document.querySelector('#map').getBoundingClientRect()
 
-    cursor.setStyle({top: `${bounds.top - mapBounds.top}px`, left: `${bounds.left - mapBounds.left}px`})
+    cursor.setStyle({transform: `translate(${bounds.left - mapBounds.left}px, ${bounds.top - mapBounds.top}px)`})
   },
   setClickedTile(e) {
     store.setState({clickedTile: e.target})

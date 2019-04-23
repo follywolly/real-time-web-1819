@@ -22,6 +22,7 @@ button, input {
   max-width: 1260px;
   margin: 0 auto;
   padding: 2rem;
+  text-align: center;
 }
 form {
   display: flex;
@@ -34,7 +35,7 @@ form {
   width: 100vw;
   max-width: none;
   bottom: 0;
-  background-color: white;
+  background-color: lightgrey;
   display: none;
   z-index: 20;
 }
@@ -43,14 +44,16 @@ form {
 }
 #login,#register {
   max-width: 15rem;
+  margin: 0 auto;
 }
-input {
+input, select {
   background: 0;
   border: 0;
   border-radius: 5px;
   background: white;
   padding: 0.5rem 1rem;
   margin: 0.5rem 0 1.5rem;
+  font-family: inherit;
 }
 #map {
   width: 100%;
@@ -87,6 +90,25 @@ input {
   pointer-events: none;
   z-index: 11;
 }
+#scoreboard {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  padding: 1rem;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  height: 12rem;
+  overflow: hidden;
+  content: "";
+  width: 15rem;
+  background-color: #ababab;
+  z-index: 1;
+}
+#scoreboard li {
+  margin: 0.5rem 0;
+  color: #fff;
+}
 .player {
   border-radius: 50%;
   background-color: white;
@@ -103,6 +125,7 @@ input {
   text-shadow: 1px 1px #000;
   /* transform-origin: center; */
 }
+.bomb,
 .chest {
   width: 32px;
   height: 32px;
@@ -111,6 +134,13 @@ input {
   position: absolute;
   top: 0;
   left: 0;
+
+}
+.bomb {
+  background-color: red;
+  border-radius: 50%;
+}
+.chest {
   background-image: url('/images/entities/chest.png');
   background-repeat: no-repeat;
   background-position: top left;

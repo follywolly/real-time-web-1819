@@ -14,7 +14,7 @@ class Chest extends Entity {
     const span = document.createElement('span')
     span.innerText = 'chest'
     this.el.appendChild(span)
-    document.querySelector('#map').appendChild(this.el)
+    this.map.appendChild(this.el)
 
     this.genRandomCoords()
       .then(coords => {
@@ -31,9 +31,6 @@ class Chest extends Entity {
           transform: `translate(${coords[1] * tile.size}px, ${coords[0] * tile.size}px)`
         })
       })
-  }
-  delete(holder) {
-    this.map.removeChild(this.el)
   }
 }
 

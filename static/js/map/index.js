@@ -8,18 +8,21 @@ import Chest from '../entity/chest.js'
 const map = {
   el: document.querySelector('#map'),
   init(){
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const bounds = size.calc()
       this.el.style = `width: ${bounds.width}px; height: ${bounds.height}px; grid-template-columns: repeat(${bounds.x}, ${bounds.tile.size}px); grid-template-rows: repeat(${bounds.y}, ${bounds.tile.size}px)`
       cursor.setStyle({width: `${bounds.tile.size}px`, height: `${bounds.tile.size}px`})
       const current = store.getState('currentMap')
-      const graph = await this.readGraph(current)
-      if (graph) {
-        grid.init(this.el)
-        grid.generate(bounds.x, bounds.y, graph)
-        return resolve()
-      }
-      reject()
+      this.readGraph(current)
+        .then(graph => {
+          if (graph) {
+            grid.init(this.el)
+            grid.generate(bounds.x, bounds.y, graph)
+            return resolve()
+          }
+          reject('Wasn\'t able to generate map graph')
+        })
+        .catch(() => reject('Couldn\'t make connection to the internet'))
     })
   },
   readGraph(mapname) {

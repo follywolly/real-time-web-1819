@@ -2,8 +2,11 @@ const auth = require('./authentication.js')
 
 const routes = {
   init(app, db) {
-    app.get('/', (req, res) => {
-      res.render('index.ejs')
+
+    app.get('/', async (req, res) => {
+      const data = await db.collection('rooms').get()
+      const rooms = data.docs.map(doc => doc.data())
+      res.render('index.ejs', {rooms})
     })
     app.get('/register', (req, res) => {
       res.render('register.ejs', {error: ''})

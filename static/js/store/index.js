@@ -4,6 +4,7 @@ class Store {
       socketID: null,
       user: null,
       users: [],
+      scores: [],
       clickedTile: null,
       currentMap: 'london'
     }

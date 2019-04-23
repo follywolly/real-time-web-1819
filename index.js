@@ -1,3 +1,4 @@
+require('dotenv').config()
 const perongeluk = require('express')
 const app = perongeluk()
 const path = require('path')
@@ -8,7 +9,7 @@ const firebase = require('firebase-admin')
 const bodyParser = require('body-parser')
 const routes = require('./middleware/routes.js')
 const session = require('express-session')
-require('dotenv').config()
+const pullWeatherData = require('./middleware/weather.js')
 
 const port = process.env.PORT || 3000
 
@@ -39,13 +40,14 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-
-
 routes.init(app, db)
 
 io.on('connection', socket => {
   handleSocket(socket, io, db)
 })
+
+pullWeatherData(io, db)
+
 
 server.listen(port, () =>{
   console.log(`listening on *:${port}`)

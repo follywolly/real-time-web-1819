@@ -8,6 +8,12 @@
       <input name="name" type="text" id="username" maxlength="15" required>
       <label for="password">Password</label>
       <input name="pass" type="password" id="password" minlength="5" maxlength="30" required>
+      <label for="room">Choose gameroom:</label>
+      <select id="room" required>
+        <% rooms.forEach(room => { %>
+          <option value="<%= room.name %>"><%= room.name %> | <%= room.users %> users online</option>
+        <% }) %>
+      </select>
       <input type="submit" value="Log in">
     </form>
     <div id="feedback">
@@ -15,7 +21,9 @@
     <a href="/register">No account yet? Sign up</a>
 
   </div>
+  <ul id="scoreboard">
 
+  </ul>
   <div id="map">
     <div id="cursor">
     </div>

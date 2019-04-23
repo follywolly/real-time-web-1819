@@ -3,6 +3,7 @@ import grid from '../map/grid.js'
 import store from '../store/index.js'
 import tile from '../map/tile.js'
 import helper from '../helpers/index.js'
+import socket from '../connection/index.js'
 
 class Entity {
   constructor(props) {
@@ -12,6 +13,8 @@ class Entity {
     this.queue = []
     this.break = false
     this.map = document.querySelector('#map')
+    this.socket = socket
+    this.helper = helper
   }
   setStyle(obj) {
     const styles = Object.entries(obj)
@@ -35,16 +38,16 @@ class Entity {
   formatCoords(el) {
     return el.dataset.tile.split(',').map(val => Number(val))
   }
-  move(c) { // coords
+  move(c, isPlayer) { // coords
     const s = this.coords
     const start = grid.graph.grid[s[0]][s[1]]
     const end = grid.graph.grid[c[0]][c[1]]
     const route = astar
       .search(grid.graph, start, end)
       .map(node => ({x: node.x, y: node.y}))
-    this.addToQueue(route)
+    this.addToQueue(route, isPlayer)
   }
-  addToQueue(value) {
+  addToQueue(value, isPlayer) {
     const length = this.queue.length
     if (length > 0) {
       this.queue = []
@@ -57,10 +60,10 @@ class Entity {
     this.break = true
     setTimeout(()=>{
       this.break = false
-      this.step(this.queue.length)
+      this.step(this.queue.length, isPlayer)
     }, this.speed)
   }
-  step(length) {
+  step(length, isPlayer) {
     if (length === 0 || this.break) {
       return
     }
@@ -68,7 +71,11 @@ class Entity {
     this.queue.shift()
     setTimeout(() => {
       this.setStyle({transform: `translate(${node.y * tile.size}px,${node.x * tile.size}px)`, 'transition-duration': `${this.speed / 1000}s`})
-      this.step(this.queue.length)
+      this.coords = [node.x, node.y]
+      if (isPlayer) {
+        this.socket.emit('currentPos', this.name, this.coords)
+      }
+      this.step(this.queue.length, isPlayer)
     }, this.speed)
   }
   setLocation(coords) {
@@ -83,7 +90,7 @@ class Entity {
         const coords = []
         const rows = grid.model.length
         const columns = grid.model[0].length
-        const row = helper.getRandomInt(rows)
+        const row = this.helper.getRandomInt(rows)
         const column = helper.getRandomInt(columns)
         if (grid.model[row][column] > 0 ) {
           return resolve([row, column])
@@ -96,6 +103,9 @@ class Entity {
   spawnRandom() {
     this.genRandomCoords()
       .then(coords => this.setLocation(coords))
+  }
+  delete() {
+    this.map.removeChild(this.el)
   }
 }
 

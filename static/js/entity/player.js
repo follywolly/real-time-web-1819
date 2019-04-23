@@ -10,10 +10,10 @@ class Player extends Entity {
 
     store.subscribe('clickedTile', this.onMove.bind(this), 'player')
   }
-  async build(user, socket) {
+  async build(user) {
     this.name = user.username
     this.coords = user.coords
-    this.socket = socket
+    this.room = user.room
     this.el.classList.add('player')
     const span = document.createElement('span')
     span.innerText = this.name
@@ -27,12 +27,22 @@ class Player extends Entity {
       'transition-duration': '0s',
       transform: `translate(${this.coords[1] * tile.size}px, ${this.coords[0] * tile.size}px)`
     })
+
+    window.addEventListener('keypress', e => {
+      if (e.keyCode === 32) {
+        // spacebar
+        this.dropBomb()
+      }
+    })
+  }
+  dropBomb() {
+    const range = this.helper.genBombRange(this.coords)
+    this.socket.emit('bomb', {room: this.room, player: this.name, coords: this.coords, range})
   }
   onMove(clicked) {
     const coords = this.formatCoords(clicked)
-    this.socket.emit('move', this.name, coords)
-    this.move(coords)
-    this.coords = coords
+    this.socket.emit('move', this.name, this.room, coords)
+    this.move(coords, true)
   }
 }
 

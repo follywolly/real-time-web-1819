@@ -11,6 +11,7 @@ class User extends Entity {
     this.name = props.username
     this.socket = props.socket
     this.coords = props.coords
+    this.room = props.room
   }
   build() {
     this.el.classList.add('player')
@@ -28,8 +29,8 @@ class User extends Entity {
     })
   }
   onMove(coords) {
-    this.move(coords)
-    this.coords = coords
+    this.move(coords, false)
+    // this.coords = coords
   }
 }
 

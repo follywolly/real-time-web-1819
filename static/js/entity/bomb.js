@@ -16,10 +16,10 @@ class Bomb extends Entity {
     this.el.classList.add('bomb')
     this.map.appendChild(this.el)
     this.setStyle({
-      width: `${tile.size}px`,
-      height: `${tile.size}px`,
-      top: '0',
-      left: '0',
+      width: `${tile.size / 2}px`,
+      height: `${tile.size / 2}px`,
+      top: `${tile.size / 4}px`,
+      left: `${tile.size / 4}px`,
       'transition-duration': '0.3s',
       transform: `translate(${this.coords[1] * tile.size}px, ${this.coords[0] * tile.size}px)`
     })
@@ -28,11 +28,9 @@ class Bomb extends Entity {
       this.setStyle({
         width: `${tile.size * 3.5}px`,
         height: `${tile.size * 3.5}px`,
-        top: '0',
-        left: '0',
         opacity: '0',
         'transition-duration': '0.3s',
-        transform: `translate(${this.coords[1] * tile.size - tile.size * 1.25}px, ${this.coords[0] * tile.size - tile.size * 1.25}px)`
+        transform: `translate(${this.coords[1] * tile.size - tile.size * 1.5}px, ${this.coords[0] * tile.size - tile.size * 1.5}px)`
       })
       setTimeout(() => {
         this.el.parentNode.removeChild(this.el)

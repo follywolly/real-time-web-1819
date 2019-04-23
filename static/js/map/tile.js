@@ -8,7 +8,7 @@ const tile = {
     const tiles = document.querySelectorAll('#map .tile')
     tiles.forEach(tile => {
       tile.addEventListener('mouseover', this.moveCursor)
-      tile.addEventListener('mousedown', this.setClickedTile)
+      tile.addEventListener('click', this.setClickedTile)
     })
   },
   moveCursor(e) {

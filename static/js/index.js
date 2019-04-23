@@ -63,7 +63,6 @@ function login(user) {
       })
   })
   socket.on('userConnect', acc => {
-    console.log('connected to ', acc.room, acc.username)
     if (acc.username === user.username) return
     const gen = new User(acc)
     gen.build()
@@ -109,7 +108,6 @@ function login(user) {
     const entity = new Bomb(bomb)
   })
   socket.on('hit', scores => {
-    console.log(scores);
     store.setState({scores})
   })
 }

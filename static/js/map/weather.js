@@ -4,7 +4,6 @@ const weather = {
     this.update(forecast)
   },
   update(forecast) {
-    forecast.weather = 'clear'
     let weather, color, duration, extra
     if (forecast.weather === 'rain') {
       weather = 'rain'

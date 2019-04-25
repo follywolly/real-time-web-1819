@@ -139,7 +139,6 @@ const handleExports = (socket, io, db) => {
       const mapCoins = store.getState('coins')
       mapCoins.forEach((coinInstance, index) => {
         coinInstance.forEach((coin, i) => {
-          console.log(coin)
           if (coin.coords.toString() === coords.toString() && !coin.taken && coin.room === userObj.room) {
             coins.push(coin)
             mapCoins[index][i].taken = true

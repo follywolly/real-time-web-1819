@@ -37,13 +37,13 @@ function handleData(io, db, data) {
 
 async function pullCryptoData(io, db) {
   console.log('pulling crypto data off');
-  // console.log('pulling crypto data');
-  // const wait = await fetch(url)
-  //   .then(data => data.json())
-  //   .then(data => Object.entries(data).map(entry => ({name: entry[0], price: round(Number(entry[1].EUR) / 10) * 10})))
-  //   .then(data => handleData(io, db, data))
-  //   .catch(console.log)
-  // setTimeout(() => pullCryptoData(io, db), 1000 * 60)
+  console.log('pulling crypto data');
+  const wait = await fetch(url)
+    .then(data => data.json())
+    .then(data => Object.entries(data).map(entry => ({name: entry[0], price: round(Number(entry[1].EUR) / 10) * 10})))
+    .then(data => handleData(io, db, data))
+    .catch(console.log)
+  setTimeout(() => pullCryptoData(io, db), 1000 * 60 * 30)
 }
 
 module.exports = pullCryptoData

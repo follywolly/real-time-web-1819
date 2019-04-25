@@ -8,6 +8,21 @@ Simple MMO browser game based on web sockets. You can walk around a map and play
 ## Table of contents
 1. [Install](#install)
 2. [Demo](#demo)
+3. [Concept](#concept)
+4. [API Description](#api-description)
+  - [openweathermap](#openweathermap)
+  - [cryptocompare](#cryptocompare)
+5. [Most important screen](#most-important-screen)
+6. [Data life cycle](#data-life-cycle)
+  - [api data life cycle](#api-data-life-cycle)
+  - [login data life cycle](#login-data-life-cycle)
+  - [game events data life cycle](#game-events-data-life-cycle)
+7. [Possible extensions](#possible-extensions)
+
+[Credits](#Credits)   
+[License](#license)
+
+
 
 ## Install
 Fork this project, then execute the following commands in your terminal:
@@ -113,11 +128,11 @@ Connection with the API requires an API key.
 The data returned is JSON, giving full detail of the current weather in the requested place(s). The connection with the api to the server consists of polling get requests every 30 minutes, because the free plan includes a maximum of 100.000 requests per month, which equals around ~2.3 requests per hour when the server is constantly live.
 
 #### API Response
-The API gives the following response for the request for BTC, BTH and ETH (values in euro):
+The API gives the following response for the request for BTC, BCH and ETH (values in euro):
 ```js
 {
   BTC: 4893.23,
-  BTH: 247.01,
+  BCH: 247.01,
   ETH: 149.85,
 }
 ```
@@ -130,7 +145,7 @@ Which i refactor on the server to:
     price: 4893.23
   },
   {
-    name: 'BTH',
+    name: 'BCH',
     price: 247.01
   },
   {
@@ -184,7 +199,11 @@ Coin event
 </details>
 
 ## Possible extensions
-
+- Giving game rooms different maps -> coin spawning is already taking this possiblity into account
+- Having weather influence gameplay
+- Add 32x32 sprites to players, coins and bombs
+- Set a max to players in a game room
+- Rewrite db functionality from firebase to mongo
 
 ## Credits
 - [browserquest by mozilla](https://github.com/mozilla/BrowserQuest) - Open source graphics & sprites

@@ -116,17 +116,20 @@ input, select {
   position: absolute;
   transition: all 0.15s linear;
 }
-.player span, .chest span {
+.player span, .coin span {
   position: absolute;
   top: -1rem;
   left: 50%;
   transform: translateX(-50%);
   color: white;
   text-shadow: 1px 1px #000;
+  white-space: nowrap;
+  pointer-events: none;
   /* transform-origin: center; */
 }
 .bomb,
-.chest {
+.chest,
+.coin {
   width: 32px;
   height: 32px;
   content: "";
@@ -134,7 +137,15 @@ input, select {
   position: absolute;
   top: 0;
   left: 0;
-
+}
+.coin {
+  top: 8px;
+  left: 8px;
+  width: 16px;
+  height: 16px;
+  background-color: yellow;
+  border-radius: 50%;
+  text-align: center;
 }
 .bomb {
   background-color: red;

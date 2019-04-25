@@ -14,6 +14,7 @@ class Player extends Entity {
     this.name = user.username
     this.coords = user.coords
     this.room = user.room
+    this.allowBomb = true
     this.el.classList.add('player')
     const span = document.createElement('span')
     span.innerText = this.name
@@ -36,8 +37,13 @@ class Player extends Entity {
     })
   }
   dropBomb() {
+    if (!this.allowBomb) return
     const range = this.helper.genBombRange(this.coords)
     this.socket.emit('bomb', {room: this.room, player: this.name, coords: this.coords, range})
+    this.allowBomb = false
+    setTimeout(() => {
+      this.allowBomb = true
+    }, 500)
   }
   onMove(clicked) {
     const coords = this.formatCoords(clicked)

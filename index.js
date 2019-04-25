@@ -10,6 +10,8 @@ const bodyParser = require('body-parser')
 const routes = require('./middleware/routes.js')
 const session = require('express-session')
 const pullWeatherData = require('./middleware/weather.js')
+const pullCryptoData = require('./middleware/crypto.js')
+const startCoinSpawning = require('./middleware/game.js')
 
 const port = process.env.PORT || 3000
 
@@ -47,6 +49,8 @@ io.on('connection', socket => {
 })
 
 pullWeatherData(io, db)
+pullCryptoData(io, db)
+startCoinSpawning(io, db)
 
 
 server.listen(port, () =>{

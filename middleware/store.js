@@ -1,13 +1,11 @@
 class Store {
   constructor() {
     this.state = {
-      socketID: null,
-      user: null,
       users: [],
       scores: [],
-      clickedTile: null,
-      currentMap: 'london',
-      coins: []
+      coins: [],
+      rooms: [],
+      crypto: []
     }
     this.subscriptions = []
   }
@@ -20,6 +18,14 @@ class Store {
       subscriptions.forEach(sub => sub.cb(val))
     })
     this.state = {...this.state, ...payload}
+  }
+  pushState(property, value) {
+    if (Array.isArray(this.state[property])){
+      return this.state[property].push(value)
+    }
+  }
+  removeIndex(property, index) {
+    this.state[property].splice(index, 1)
   }
   getState(property) {
     return this.state[property]
@@ -39,4 +45,4 @@ class Store {
 
 const store = new Store()
 
-export default store
+module.exports = store

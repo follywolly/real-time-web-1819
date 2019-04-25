@@ -4,12 +4,12 @@ const key = process.env.WEATHER_API_KEY
 
 // London: 2643743
 // Amsterdam: 2759794
-const ids = [2643743, 2759794].join(',')
+const ids = [2759794, 2643743].join(',')
 const url = `https://api.openweathermap.org/data/2.5/group?id=${ids}&units=metric&APPID=${key}`
 
 function compare(newArr, oldArr) {
   if (newArr.length === 0 || oldArr.length === 0) return newArr
-  return newArr.filter(( p, idx ) => Object.keys(p)
+  return newArr.filter((p, idx) => Object.keys(p)
     .some(prop => p[prop] !== oldArr[idx][prop])
   )
 }
@@ -21,7 +21,7 @@ function handleData(io, db, data) {
       const updated = compare(data, arr)
       if (updated.length === 0) return
       updated.forEach(update => {
-        console.log('updating weather for ', update.name);
+        console.log('updating weather for ', update.name)
         io.to(update.name.toLowerCase()).emit('weather', update)
       })
       updated.map(location => {
@@ -45,7 +45,7 @@ async function pullWeatherData(io, db) {
     })))
     .then(data => handleData(io, db, data))
     .catch(console.log)
-  setTimeout(() => pullWeatherData(io, db), 1000 * 60)
+  setTimeout(() => pullWeatherData(io, db), 1000 * 60 * 10)
 }
 
 module.exports = pullWeatherData

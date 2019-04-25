@@ -3,7 +3,6 @@ import grid from './grid.js'
 import cursor from '../entity/cursor.js'
 import player from '../entity/player.js'
 import store from '../store/index.js'
-import Chest from '../entity/chest.js'
 
 const map = {
   el: document.querySelector('#map'),

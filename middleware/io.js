@@ -1,7 +1,5 @@
 const auth = require('./authentication.js')
-
-const onlineUsers = []
-const onlineScores = []
+const store = require('./store.js')
 
 const genUser = user => {
   return {...user, currentCoords: user.coords, points: 0}
@@ -24,8 +22,8 @@ const handleExports = (socket, io, db) => {
             .set({online: true, socket: socket.id, room: user.room}, {merge: true})
             .then(() => {
               socket.join(user.room)
-              onlineScores.push({room: user.room, player: acc.username, points: 0})
-              onlineUsers.push({...acc, online: true, socket: socket.id, room: user.room})
+              store.pushState('scores', {room: user.room, player: acc.username, points: 0})
+              store.pushState('users', {...acc, online: true, socket: socket.id, room: user.room})
               cb({...acc, online: true, socket: socket.id, room: user.room})
               const ref = db.collection('rooms').doc(user.room)
               ref.get()
@@ -56,7 +54,7 @@ const handleExports = (socket, io, db) => {
       cb({error: 'Please fill in all fields'})
     }
   })
-  socket.on('getUsers', (room, cb) => {
+  socket.on('getUsers', async (room, cb) => {
     // db.collection('users').get()
     //   .then(data => {
     //     if (!data.docs) {
@@ -73,25 +71,33 @@ const handleExports = (socket, io, db) => {
     //     cb(users)
     //   })
     //   .catch(err => cb({error: err}))
-    const users = onlineUsers.filter(user => user.room === room)
-    const scores = onlineScores.filter(score => score.room === room)
-    db.collection('weather').doc(room.toLowerCase()).get()
+    const users = store.getState('users').filter(user => user.room === room)
+    const scores = store.getState('scores').filter(score => score.room === room)
+    const weather = await db.collection('weather').doc(room.toLowerCase()).get()
       .then(doc => doc.data())
-      .then(weather => cb(users, scores, weather))
+    const crypto = await db.collection('crypto').get()
+      .then(data => data.docs.map(doc => doc.data()))
+
+    cb(users, scores, weather, crypto)
 
   })
   socket.on('userConnect', user => {
     io.to(user.room).emit('userConnect', user)
   })
   socket.on('disconnect', async () => {
+    const onlineUsers = store.getState('users')
+    const onlineScores = store.getState('scores')
     const i = onlineUsers.findIndex(user => user.socket === socket.id)
     if (i > -1) {
       const j = onlineScores.findIndex(score => score.player === onlineUsers[i].username)
       if (j > -1) {
         onlineScores.splice(j, 1)
+        store.setState({scores: onlineScores})
       }
       onlineUsers.splice(i, 1)
+      store.setState({users: onlineUsers})
     }
+
     const data = await db.collection('users').get()
     const doc = data.docs
       .find(doc => doc.data().socket === socket.id)
@@ -115,23 +121,48 @@ const handleExports = (socket, io, db) => {
       .catch(console.log)
   })
   socket.on('move', async (name, room, coords) => {
-    console.log(room);
+    const onlineUsers = store.getState('users')
     io.to(room).emit('move', socket.id, coords)
     const i = onlineUsers.findIndex(user => user.username === name)
     if (i > -1) {
       onlineUsers[i].coords = coords
+      store.setState({users: onlineUsers})
     }
     const update = await db.collection('users')
       .doc(name)
       .set({coords}, {merge: true})
   })
   socket.on('currentPos', (name, coords) => {
+    const onlineUsers = store.getState('users')
     const i = onlineUsers.findIndex(user => user.username === name)
     if (i > -1) {
-      onlineUsers[i].currentCoords = coords
+      const userObj = onlineUsers[i]
+      userObj.currentCoords = coords
+      const coins = []
+      const mapCoins = store.getState('coins')
+      mapCoins.forEach((coinInstance, index) => {
+        coinInstance.forEach((coin, i) => {
+          console.log(coin)
+          if (coin.coords.toString() === coords.toString() && !coin.taken && coin.room === userObj.room) {
+            coins.push(coin)
+            mapCoins[index][i].taken = true
+          }
+        })
+
+      })
+      store.setState({coins: mapCoins})
+      coins.forEach(coin => {
+        io.to(userObj.room).emit('coin-taken', coin)
+        onlineUsers[i].points += coin.price
+      })
+      const scores = onlineUsers.map(user => ({room: user.room, player: user.username, points: user.points}))
+      store.setState({users: onlineUsers})
+      store.setState({scores})
+      io.to(userObj.room).emit('hit', scores.filter(score => score.room === userObj.room))
     }
   })
   socket.on('bomb', bomb => {
+    const onlineUsers = store.getState('users')
     io.to(bomb.room).emit('bomb', bomb)
     setTimeout(() => {
       const hit = onlineUsers
@@ -144,19 +175,19 @@ const handleExports = (socket, io, db) => {
       hit.forEach(user => {
         const i = onlineUsers.findIndex(online => online.username === user.username)
         if (i > -1) {
+          onlineUsers[i].points -= 1000
           if (onlineUsers[i].points <= 0) {
             onlineUsers[i].points = 0
-          } else {
-            onlineUsers[i].points -= 1
           }
         }
       })
       const i = onlineUsers.findIndex(online => online.username === bomb.player)
       if (i === -1 ) return
-      onlineUsers[i].points += hit.length
+      onlineUsers[i].points += hit.length * 1000
       const userObj = onlineUsers[i]
       const scores = onlineUsers.map(user => ({room: user.room, player: user.username, points: user.points}))
-      const onlineScores = scores
+      store.setState({users: onlineUsers})
+      store.setState({scores})
       io.to(bomb.room).emit('hit', scores.filter(score => score.room === userObj.room))
     }, 2000)
   })

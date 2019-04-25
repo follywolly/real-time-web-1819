@@ -90,7 +90,7 @@ class Entity {
         const coords = []
         const rows = grid.model.length
         const columns = grid.model[0].length
-        const row = this.helper.getRandomInt(rows)
+        const row = helper.getRandomInt(rows)
         const column = helper.getRandomInt(columns)
         if (grid.model[row][column] > 0 ) {
           return resolve([row, column])

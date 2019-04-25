@@ -24,7 +24,6 @@ class Bomb extends Entity {
       transform: `translate(${this.coords[1] * tile.size}px, ${this.coords[0] * tile.size}px)`
     })
     setTimeout(() => {
-      console.log('BOOM');
       this.setStyle({
         width: `${tile.size * 3.5}px`,
         height: `${tile.size * 3.5}px`,

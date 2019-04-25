@@ -44,14 +44,13 @@ app.use(bodyParser.json())
 
 routes.init(app, db)
 
-io.on('connection', socket => {
-  handleSocket(socket, io, db)
-})
-
 pullWeatherData(io, db)
 pullCryptoData(io, db)
 startCoinSpawning(io, db)
 
+io.on('connection', socket => {
+  handleSocket(socket, io, db)
+})
 
 server.listen(port, () =>{
   console.log(`listening on *:${port}`)

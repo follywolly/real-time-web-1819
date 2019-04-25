@@ -5,7 +5,8 @@ class Store {
       scores: [],
       coins: [],
       rooms: [],
-      crypto: []
+      crypto: [],
+      weather: []
     }
     this.subscriptions = []
   }

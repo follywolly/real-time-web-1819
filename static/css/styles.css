@@ -66,6 +66,7 @@ input, select {
   background: url('/images/maps/london/ground.png');
   background-repeat: no-repeat;
   background-position: top left;
+  overflow: hidden;
 }
 #map::before {
   position: absolute;
@@ -102,12 +103,40 @@ input, select {
   overflow: hidden;
   content: "";
   width: 15rem;
-  background-color: #ababab;
+  background-color: rgba(0,0,0,0.4);
+  pointer-events: none;
   z-index: 1;
 }
 #scoreboard li {
   margin: 0.5rem 0;
   color: #fff;
+}
+.weather {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  content: "";
+  display: block;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.2;
+  animation: scroll linear infinite;
+  background-size: cover;
+}
+.weather:nth-of-type(2) {
+  top: -100%;
+  bottom: auto;
+  height: 100%;
+}
+@keyframes scroll {
+  0% {
+    transform: translateY(0)
+  }
+  100% {
+    transform: translateY(100%)
+  }
 }
 .player {
   border-radius: 50%;
@@ -115,6 +144,7 @@ input, select {
   content: "";
   position: absolute;
   transition: all 0.15s linear;
+  pointer-events: none;
 }
 .player span, .coin span {
   position: absolute;
@@ -148,6 +178,7 @@ input, select {
   text-align: center;
 }
 .bomb {
+  pointer-events: none;
   background-color: red;
   border-radius: 50%;
 }

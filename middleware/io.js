@@ -73,11 +73,8 @@ const handleExports = (socket, io, db) => {
     //   .catch(err => cb({error: err}))
     const users = store.getState('users').filter(user => user.room === room)
     const scores = store.getState('scores').filter(score => score.room === room)
-    const weather = await db.collection('weather').doc(room.toLowerCase()).get()
-      .then(doc => doc.data())
-    const crypto = await db.collection('crypto').get()
-      .then(data => data.docs.map(doc => doc.data()))
-
+    const weather = store.getState('weather').find(city => city.name.toLowerCase() === room)
+    const crypto = store.getState('crypto')
     cb(users, scores, weather, crypto)
 
   })

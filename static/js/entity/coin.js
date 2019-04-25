@@ -38,7 +38,9 @@ class Coin extends Entity {
     }, 4000)
   }
   delete() {
-    this.el.parentNode.removeChild(this.el)
+    if (this.el && this.el.parentNode) {
+      this.el.parentNode.removeChild(this.el)
+    }
   }
 }
 

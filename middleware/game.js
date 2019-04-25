@@ -3,7 +3,6 @@ const fs = require('fs')
 const path = require('path')
 
 function getCrypto(db) {
-  console.log('getting crypto values from db');
   return db.collection('crypto').get()
     .then(ref => ref.docs.map(doc => doc.data()))
 }
@@ -87,7 +86,6 @@ async function startCoinSpawning(io, db) {
     store.setState({crypto})
     rooms = await db.collection('rooms').get()
       .then(data => data.docs.map(doc => doc.data()))
-      console.log('setting rooms:', rooms);
     store.setState({rooms})
     getNew = false
   } else {

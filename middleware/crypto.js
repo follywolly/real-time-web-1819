@@ -1,4 +1,5 @@
 const fetch = require('node-fetch')
+const store = require('./store.js')
 
 const key = process.env.CRYPTO_API_KEY
 
@@ -19,6 +20,7 @@ function handleData(io, db, data) {
   return db.collection('crypto').get()
     .then(ref => ref.docs.map(doc => doc.data()))
     .then(arr => {
+      store.setState('crypto', data)
       const updated = compare(data, arr)
       if (updated.length === 0) return
       updated.forEach(update => {

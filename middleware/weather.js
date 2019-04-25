@@ -1,4 +1,5 @@
 const fetch = require('node-fetch')
+const store = require('./store.js')
 
 const key = process.env.WEATHER_API_KEY
 
@@ -18,6 +19,7 @@ function handleData(io, db, data) {
   return db.collection('weather').get()
     .then(ref => ref.docs.map(doc => doc.data()))
     .then(arr => {
+      store.setState({weather: data})
       const updated = compare(data, arr)
       if (updated.length === 0) return
       updated.forEach(update => {
@@ -26,8 +28,8 @@ function handleData(io, db, data) {
       })
       updated.map(location => {
         return db.collection('weather')
-        .doc(location.name.toLowerCase())
-        .set(location)
+          .doc(location.name.toLowerCase())
+          .set(location)
       })
     })
 }
@@ -37,11 +39,10 @@ async function pullWeatherData(io, db) {
   const wait = await fetch(url)
     .then(data => data.json())
     .then(data => data.list.map(obj => ({
-      name: obj.name,
-      temp: obj.main.temp,
-      wind: obj.wind ? obj.wind : null,
+      name: obj.name.toLowerCase(),
+      temp: obj.main.temp ? obj.main.temp : null,
       clouds: obj.clouds ? obj.clouds : null,
-      rain: obj.rain ? obj.rain : null
+      weather: obj.weather && obj.weather[0] ? obj.weather[0].main.toLowerCase() : null
     })))
     .then(data => handleData(io, db, data))
     .catch(console.log)

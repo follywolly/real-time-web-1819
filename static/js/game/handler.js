@@ -4,6 +4,7 @@ import User from '../entity/user.js'
 import Bomb from '../entity/bomb.js'
 import Coin from '../entity/coin.js'
 import map from '../map/index.js'
+import weather from '../map/weather.js'
 import scoreboard from '../map/scoreboard.js'
 import socket from '../connection/index.js'
 
@@ -12,9 +13,8 @@ const feedback = document.querySelector('#feedback')
 
 const game = {
   init(user) {
-    socket.emit('getUsers', user.room, (online, scores, weather, crypto) => {
-      console.log('initial weather: ', weather);
-      console.log('initial crypto: ', crypto)
+    socket.emit('getUsers', user.room, (online, scores, forecast, crypto) => {
+      weather.init(forecast)
       if (online.error) {
         return feedback.innerText = online.error
       }
@@ -63,7 +63,6 @@ const game = {
       const index = users.findIndex(player => player.socket === id)
       if (index > -1) {
         const player = users[index]
-        console.log('disconnecting in ', player.room, player.name)
         const scores = store.getState('scores')
         const i = scores.findIndex(score => score.player === player.name)
         if (i > -1) {
@@ -76,14 +75,13 @@ const game = {
       }
 
     })
-    socket.on('weather', weather => {
-      console.log('weatherupdate: ', weather);
+    socket.on('weather', forecast => {
+      weather.update(forecast)
     })
     socket.on('crypto', crypto => {
-      console.log('crypto update: ', crypto);
+      console.log('crypto update: ', crypto)
     })
     socket.on('coin', coin => {
-      console.log(coin);
       const entity = new Coin(coin)
       const coins = store.getState('coins')
       coins.push(entity)
@@ -93,7 +91,6 @@ const game = {
       const coins = store.getState('coins')
       if (coins.length === 0) return
       const index = coins.findIndex(item => {
-        console.log(item, coin);
         return item.coords.toString() === coin.coords.toString() && item.price === coin.price
       })
       if (index > -1) {
